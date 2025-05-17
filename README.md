@@ -7,63 +7,36 @@ UPIPay is a manual UPI based payment gateway provided by MakeEasy.
 `implementation(files("libs/UPIPay.aar"))`
 
 ```kotlin
+
+//Initialize the UPIPayFlow class
 val upiPayFlow = UPIPayFlow(this)
 
-        val orderId = UPIPayUtils.createOrderId()
-        val user = UPIPayUser("2")
+// Create Order Id
+val orderId = UPIPayUtils.createOrderId()
 
-        val uiDark = UPIPayUI()
-        uiDark.appLogo = R.drawable.ebet
-        uiDark.appName = getString(R.string.app_name)
-        uiDark.theme = UPIPayUtils.THEME_LIGHT
-        uiDark.merchantId = UPIPayUtils.DEMO_MERCHANT_ID
-        //uiDark.webhook = "your_webhook_url"
-        //uiDark.alertKey = "your_tg_group_username"
+// Define UPIPayUser model class
+val user = UPIPayUser("2")
 
-        val uiLight = UPIPayUI()
-        uiLight.appLogo = R.drawable.ebet
-        uiLight.appName = getString(R.string.app_name)
-        uiLight.theme = UPIPayUtils.THEME_DARK
-        uiLight.merchantId = UPIPayUtils.DEMO_MERCHANT_ID
-        //uiLight.webhook = "your_webhook_url"
-        //uiLight.alertKey = "your_tg_group_username"
+// Setup UPIPayFlow UI design
+val uiDark = UPIPayUI()
+uiDark.appLogo = R.drawable.ebet
+uiDark.appName = getString(R.string.app_name)
+uiDark.theme = UPIPayUtils.THEME_LIGHT //UPIPayUtils.THEME_DARK
+uiDark.merchantId = UPIPayUtils.DEMO_MERCHANT_ID
+//uiDark.webhook = "your_webhook_url"
+//uiDark.alertKey = "your_tg_group_username"
 
-        findViewById<Button>(R.id.pay_button1).setOnClickListener {
-            val upiPayModel = UPIPayModel(
-                "Payee Name",
-                "100",
-                orderId,
-                "your_upi_id",
-                user
-            )
-            upiPayFlow.init(upiPayModel,uiDark,object:UPIPayInitListener {
-                override fun onSuccess() {
-                    upiPayFlow.startFlow()
-                }
-                override fun onFailed(p0: Int, p1: String?) {
-                    Toast.makeText(this@MainActivity,p1,Toast.LENGTH_SHORT).show()
-                }
+// Define UPIPayModel model class
+val upiPayModel = UPIPayModel("Payee Name","100",orderId,"your_upi_id",user)
 
-            })
-        }
-        findViewById<Button>(R.id.pay_button2).setOnClickListener {
-            val upiPayModel = UPIPayModel(
-                "Payee Name",
-                "100",
-                orderId,
-                "your_upi_id",
-                user
-            )
-            upiPayFlow.init(upiPayModel,uiLight,object:UPIPayInitListener {
-                override fun onSuccess() {
-                    upiPayFlow.startFlow()
-                }
-                override fun onFailed(p0: Int, p1: String?) {
-                    Toast.makeText(this@MainActivity,p1,Toast.LENGTH_SHORT).show()
-                }
+// Pass the mandatory objects and ready for payment
+upiPayFlow.init(upiPayModel,uiLight,object:UPIPayInitListener {
+    override fun onSuccess() {
+        upiPayFlow.startFlow()
+    }
+    override fun onFailed(p0: Int, p1: String?) {
+        Toast.makeText(this@MainActivity,p1,Toast.LENGTH_SHORT).show()
+    }
 
-            })
-        }
+})
 ```
-
-
